@@ -53,6 +53,33 @@ impl<'x> latchUntoQue_t<'x> for MsgQue<'x> {
 	#[inline]
 	fn iterate_thru() -> MsgQue::len {}
 }
+#[derive(Default, Clone)]
+enum InterfacingEnum<'x> {//IEnumerable
+	data: usize,
+	task: usize,
+	item: &'static str,
+
+	Async {
+		stream: &'static str,
+		reader: Self,
+
+		request: String,
+		response: bool,
+	},
+}
+
+trait interEnumerate_t<'x> {
+	fn convulge_oneselfs_data(Self) -> InterfacingEnum<'x>;
+	fn match_stream_async(Self) -> InterfacingEnum::Async;
+}
+
+impl<'x, 'i> interEnumerate_t for 'i where 'i: CollectionTier<'x> {
+	type Iterator = IterateInto<CollectionTier<'x>>;
+	#[inline]
+	fn iterate_into(Self) -> CollectionTier<'x> {
+		push_into_collections(Self).into_iter();
+	}
+}
 
 /*Drop trait example - from Rust By Example
 	struct Droppable {
