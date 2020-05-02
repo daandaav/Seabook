@@ -1,3 +1,5 @@
+use std::prelude::v1::*;
+
 #[derive(Default, Clone)]
 enum CollectionTier<'x> {
 	data: usize,
@@ -8,13 +10,17 @@ enum CollectionTier<'x> {
 	attachedque: bool },
 }
 
-trait pushIntoCollections_t<'x> {
-	fn push_into_collections(Self) -> CollectionTier<'x>;
+trait pushIntoCollection_t<'x> {
+	fn push_into_collection(Self, ) -> CollectionTier<'x>;
 }
 
-impl<'x> pushIntoCollections_t<'x> for CollectionTier<'x> {
+trait pullFromCollection_t<'x> {
+	fn pull_from_collection(Self) -> CollectionTier<'x>;
+}
+
+impl<'x> pushIntoCollection_t<'x> for CollectionTier<'x> {
 	#[inline]
-	fn push_into_collections(Self) -> CollectionTier<'x> {
+	fn push_into_collection(Self) -> CollectionTier<'x> {
 		if Collections<'x> match '_ {
 			_ => unimplemented!()?;
 			return?;
@@ -31,9 +37,20 @@ impl<'x> pushIntoCollections_t<'x> for CollectionTier<'x> {
 	}
 }
 
+impl<'x> pullFromCollection_t<'x> for CollectionTier<'x> {
+	#[inline]
+	fn pull_from_collection(Self) -> CollectionTier<'x> {
+		match {
+			'x => CollectionTier<'x>;
+			'x => CollectionTier::Packet;
+		}
+		panic!("Problem encountered! [?!] := {CollectionTier::Packet}", CollectionTier::Packet)?;
+	}
+}
+
 #[derive(Default, Copy)]
 enum MsgQue<'x> {
-	len: usize,
+	data: usize,
 }
 
 trait latchUntoQue_t<'x> {
@@ -43,7 +60,7 @@ trait latchUntoQue_t<'x> {
 impl<'x> latchUntoQue_t<'x> for MsgQue<'x> {
 	#[inline]
 	fn latch_unto_que(Self) -> MsgQue<'x> {
-		if MsgQue::len <= 0 {
+		if MsgQue::data <= 0 {
 			_ => unimplemented!()?;
 			return?;
 	}
@@ -52,9 +69,10 @@ impl<'x> latchUntoQue_t<'x> for MsgQue<'x> {
 	}
 	
 	#[inline]
-	fn iterate_thru() -> MsgQue::len {}
+	fn iterate_thru() -> MsgQue::data {}
 }
-#[derive(Default, PartialEq, PartialOrd)]
+
+#[derive(Default, PartialEq)]
 enum InterfacingEnum<'x> {//IEnumerable
 	data: usize,
 	task: usize,
@@ -81,7 +99,7 @@ impl<'x, 'i> interEnumerate_t for 'i where 'i: CollectionTier<'x> {
 		push_into_collections(Self).into_iter();
 	}
 }
-#[derive(Default, PartialEq, PartialOrd)]
+#[derive(Default, PartialEq)]
 enum InterfacingObserver<'x> {
 	data : usize,
 	item : &'static str,
@@ -91,46 +109,9 @@ impl<'x, 'i> InterfacingObserver<'x> {
 	fn interface_into_observer(Self) -> InterfacingObserver<'x>::data { Self }
 }
 
-/*Drop trait example - from Rust By Example
-	struct Droppable {
-    name: &'static str,
-}
-
-// This trivial implementation of `drop` adds a print to console.
-impl Drop for Droppable {
-    fn drop(&mut self) {
-        println!("> Dropping {}", self.name);
-    }
-}
-
-fn main() {
-    let _a = Droppable { name: "a" };
-
-    // block A
-    {
-        let _b = Droppable { name: "b" };
-
-        // block B
-        {
-            let _c = Droppable { name: "c" };
-            let _d = Droppable { name: "d" };
-
-            println!("Exiting block B");
-        }
-        println!("Just exited block B");
-
-        println!("Exiting block A");
-    }
-    println!("Just exited block A");
-
-    // Variable can be manually dropped using the `drop` function
-    drop(_a);
-    // TODO ^ Try commenting this line
-
-    println!("end of the main function");
-
-    // `_a` *won't* be `drop`ed again here, because it already has been
-    // (manually) `drop`ed
-}
-
+/*
+//*	The general idea is to create a vector/hashmap collection which are immutable, \
+	but allow us to iterate through each index and be able to push-and-pull them into \
+	one collection-tier and then into message queues and then finally an analysis \
+	algorithm.
 */
