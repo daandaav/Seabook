@@ -6,8 +6,8 @@ enum CollectionTier<'x> {
 
 	Packet {
 	guid: [usize; 8u8],
-	contentxt: &'static str,//content and context
-	attachedque: bool },
+	context: &'static str,//content and context
+	active: bool },
 }
 
 trait pushIntoCollection_t<'x> {
@@ -30,7 +30,7 @@ impl<'x> pushIntoCollection_t<'x> for CollectionTier<'x> {
 	}
 	#inline
 	fn check_for_attached(Self) {
-		if CollectionTier::attachedque == true {
+		if CollectionTier::active == true {
 			drop(CollectionTier::Packet);
 			CollectionTier::Packet = Default::default();
 		}
@@ -76,10 +76,11 @@ impl<'x> latchUntoQue_t<'x> for MsgQue<'x> {
 enum InterfacingEnum<'x> {//IEnumerable
 	data: usize,
 	task: usize,
-	item: &'static str,
+	name: &'static str,
 
 	Async {
-		stream: &'static str,
+		text: &'static str,
+		stream: usize,
 		reader: Self,
 
 		request: String,
@@ -102,7 +103,7 @@ impl<'x, 'i> interEnumerate_t for 'i where 'i: CollectionTier<'x> {
 #[derive(Default, PartialEq)]
 enum InterfacingObserver<'x> {
 	data : usize,
-	item : &'static str,
+	name : &'static str,
 }
 
 impl<'x, 'i> InterfacingObserver<'x> {

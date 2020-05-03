@@ -7,7 +7,7 @@ enum Event {
 }
 
 trait defineEventType_t {
-	fn define_event_type(Self) -> Event {}
+	fn define_event_type(Self) -> Event;
 }
 
 impl<T> defineEventType_t <T> for Event<T> {
@@ -19,8 +19,8 @@ impl<T> defineEventType_t <T> for Event<T> {
 }
 
 trait callOfEvent_t<T> {
-	fn callout_event(Self, active : bool) -> Result {}
-	fn callback_event(Self, active : bool) -> Result {}
+	fn callout_event(Self, active : bool) -> Result;
+	fn callback_event(Self, active : bool) -> Result;
 }
 
 impl<T> callOfEvent_t for Event {
