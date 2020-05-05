@@ -10,7 +10,7 @@ Currently my idea is to unit-test then crash-test the reactiveness and reliabili
 Questions:
 - How does the integrity of an event stream safeguard and persist when physical connection is cut or shutdown?
 - Apache Arrow's Bitmap.Rs is an interesting program, but how can we expand on its functionality? Especially since it only tracks null values, lobbies data into an array; the question is, where does its optimisation end and its expansive or extensive utility begin?
-- From Arrow to Kafka and then into Cassandra: How can we intercept the raw events, enriched events as well as the analysis alogrithms employed by the system/framework - and how can we further unit-test them?
+- From Arrow to Kafka and then into Cassandra: How can we intercept the raw events, enriched events as well as the analysis alogrithms employed by the system/framework - and how can we further our unit-test with them?
 
 *I'm learning how to make a Functional Reactive Program in Rust with this project.
 Hopefully this can be used for educational purposes.*
