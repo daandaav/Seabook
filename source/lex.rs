@@ -1,10 +1,9 @@
 use std::prelude::v1::*;
 
 #[derive(Debug, Copy)]
-enum Lexicon<T> {
-	len : usize,
-	state : &'static str//explicit type annotation of a string-slice
+enum Lexicon<T, S> {
 	track(T),
+	state(S),
 }
 
 /*
@@ -18,23 +17,34 @@ enum Lexicon<T> {
 	Our Lexicon should derive from either a hashmap function or a vector function.
 */
 
-trait withinLexiconTrackValue<T> -> Result<()> {//Result with the caret <> could either be: just as a caret <>:;
+trait withinLexiconTrackState<T, S> -> Result<()> {//Result with the caret <> could either be: just as a caret <>:;
 	//with template <T>:;
 	//or with function parameter <()>	//a careted function parameter is idead for I/O with the Result
 	fn track_value(Self) -> Result<()>;
+	fn record_state(Self) -> Vec<S>;
 }
 //impl<T : Read> or impl<T : BufReader> [?]
-impl<T> withinLexiconTrackValue for Lexicon where T : Result<()> {
+impl<T> withinLexiconTrackState for Lexicon where T : Result<()> {
 	fn track_value(Self) -> Result<()> {
 		match Self {
 			Lexicon::track(ref Self) => Self.iter(Result<(T)>),
 			_ => unimplemented!("Resulted in a Wildcard[?!]: {}\n", Lexicon::track(Self)),
 		}
 
-		if Self == 0 | _ {
+		if Self == _ {
 			panic!("{Lexicon::track(ref Self)} => Self.iter(Result<(T)>)\n ...has resulted into [[panic!()]]")?;
-			return;
 			Err(T)
-		}//if Self == 0 | _
+		}//if Self == _
 	}//fn track_value(Self)
+
+	fn record_state(Self) -> Vec<S> {
+		match Self {
+			Lexicon::state(ref Self) => Vec<Self>
+		}
+
+		if Self == -1 {
+			panic!("{Lexicon::state(Self)} => Vec<Self>", Lexicon::state(Self))?,
+			Err(S)
+		}//if Self == -1
+	}
 }//impl<T> withinLexiconTrackValue
