@@ -1,35 +1,34 @@
 use std::prelude::v1::*;
 
 #[derive(Debug, Copy)]
-struct Event {
-	message : usize
-	type : &'static str,
-	active : bool,
+enum Event<T, S> {
+	message(T, &'static str, bool),
+	state(S)
 }
 
-trait defineEventType_t {
-	fn define_event_type(Self) -> Event;
+trait observeEventMessage_t<T, S> {
+	fn observe_event_message(Self, stat : &'static str, active : bool) -> Result<()>;
 }
 
-impl<T> defineEventType_t <T> for Event<T> {
-	fn define_event_type(Self) {
+impl<T> observeEventMessage_t<T, S> for Event<T, S> {
+	fn observe_event_message(Self, stat : &'static str, active : bool) -> Result<()> {
 		match Self {
-			Event::type => Self
+			Event::message(ref Self)=> Self.iter_into(S)
 		}
-	}
+	}//fn define_event_message
 }
 
 trait callOfEvent_t<T> {
 	fn callout_event(Self, active : bool) -> Result;
-	fn callback_event(Self, active : bool) -> Result;
+	fn callback_event(Self, active : bool) -> Result<()>;
 }
 
 impl<T> callOfEvent_t for Event {
-	fn callout_event(Self, active : bool) -> Result {
+	fn callout_event(Self, active : bool) -> Result<()> {
 		Event::callout_event(Self, active = true)
 	}
 
-	fn callback_event(Self, active : bool) -> Result {
+	fn callback_event(Self, active : bool) -> Result<()> {
 		Event::callback_event(Self, active = false)
 	}
 }
