@@ -24,7 +24,7 @@ trait withinLexiconTrackState<T, S> -> Result<()> {//Result with the caret <> co
 	fn record_state(Self) -> Vec<S>;
 }
 //impl<T : Read> or impl<T : BufReader> [?]
-impl<T> withinLexiconTrackState for Lexicon where T : Result<()> {
+impl<T> withinLexiconTrackState for Result<()> where T : Lexicon<T> {
 	fn track_value(Self) -> Result<()> {
 		match Self {
 			Lexicon::track(ref Self) => Self.iter(Result<(T)>),
@@ -48,3 +48,43 @@ impl<T> withinLexiconTrackState for Lexicon where T : Result<()> {
 		}//if Self == -1
 	}
 }//impl<T> withinLexiconTrackValue
+#[derive(Clone, PartialEq)]
+pub struct State {
+	id : u32,
+
+	brdg : Vec<usize>,
+
+	msg : Hash<String, Referal>
+}
+
+pub struct Producer {
+	id : u32,
+	state : Vec<Broker>,
+}
+//...
+impl<T> Producer for State {
+	fn pair<T>(Self, s : T) {
+		Self.id.hash(s);
+	}
+}
+
+pub struct Broker {
+	id : u32,
+
+	Message {
+		len : usize,
+		msg : &'static str,
+	}
+}
+//...
+impl<T> Broker for Producer {
+	let v = Vec::new();
+
+	fn produce<T>(Self, p : T) {
+		Self.id.hash(p);
+		Self.v.push(p);
+	}
+}
+
+pub struct Consumer {}
+//...

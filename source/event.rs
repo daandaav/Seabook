@@ -13,7 +13,7 @@ trait observeEventMessage_t<T, S> {
 impl<T> observeEventMessage_t<T, S> for Event<T, S> {
 	fn observe_event_message(Self, stat : &'static str, active : bool) -> Result<()> {
 		match Self {
-			Event::message(ref Self)=> Self.iter_into(S)
+			Event::message(ref Self)=> S.iter_into(Self)
 		}
 	}//fn define_event_message
 }
@@ -45,7 +45,7 @@ enum Push<T> {
 impl<T : Read> Push for Data -> Result<usize> {
 	fn data_push_into_iter(Self) -> Result<usize> {
 		match Self {
-			Data::data(ref Self) => Self.read()
+			Data::data(ref Self) => T.read(Self)
 	}
 }
 
@@ -56,7 +56,7 @@ enum Pull<T> {
 impl<T : Drop> Pull for Data -> Result<usize> {
 	fn data_pull_from_iter(Self) -> Result<usize> {
 		match Self {
-			Data::data(ref Self) => Self.drop()
+			Data::data(ref Self) => T.drop(Self)
 		}
 	}
 }
