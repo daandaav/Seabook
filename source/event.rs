@@ -45,7 +45,7 @@ enum Push<T> {
 impl<T : Read> Push for Data -> Result<usize> {
 	fn data_push_into_iter(Self) -> Result<usize> {
 		match Self {
-			Data::data(ref Self) => T.read(Self)
+			Data::data(ref Self) => Self.read()
 	}
 }
 
@@ -56,7 +56,7 @@ enum Pull<T> {
 impl<T : Drop> Pull for Data -> Result<usize> {
 	fn data_pull_from_iter(Self) -> Result<usize> {
 		match Self {
-			Data::data(ref Self) => Self.drop(Pull::pull(T))
+			Data::data(ref Self) => Self.drop()
 		}
 	}
 }
