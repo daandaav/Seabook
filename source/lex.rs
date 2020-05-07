@@ -28,10 +28,10 @@ impl<T> withinLexiconTrackState for Result<()> where T : Lexicon<T> {
 	fn track_value(Self) -> Result<()> {
 		match Self {
 			Lexicon::track(ref Self) => Self.iter(Result<(T)>),
-			_ => unimplemented!("Resulted in a Wildcard[?!]: {}\n", Lexicon::track(Self)),
+			'_ => unimplemented!("Resulted in a Wildcard[?!]: {}\n", Lexicon::track(Self)),
 		}
 
-		if Self == _ {
+		if Self == '_ {
 			panic!("{Lexicon::track(ref Self)} => Self.iter(Result<(T)>)\n ...has resulted into [[panic!()]]")?;
 			Err(T)
 		}//if Self == _
@@ -48,18 +48,19 @@ impl<T> withinLexiconTrackState for Result<()> where T : Lexicon<T> {
 		}//if Self == -1
 	}
 }//impl<T> withinLexiconTrackValue
+
 #[derive(Clone, PartialEq)]
 pub struct State {
 	id : u32,
 
-	brdg : Vec<usize>,
+	broker : Vec<usize>,
 
-	msg : Hash<String, Referal>
+	msg : Hash<String, Referee>
 }
 
 pub struct Producer {
 	id : u32,
-	state : Vec<Broker>,
+	agents : Vec<Broker>,
 }
 //...
 impl<T> Producer for State {
@@ -68,6 +69,7 @@ impl<T> Producer for State {
 	}
 }
 
+#[derive(PartialEq)]
 pub struct Broker {
 	id : u32,
 
@@ -83,6 +85,21 @@ impl<T> Broker for Producer {
 	fn produce<T>(Self, p : T) {
 		Self.id.hash(p);
 		Self.v.push(p);
+	}
+}
+
+pub struct Referee<T> {
+	data : Vec<T>,
+}
+
+impl<T> Referee<T> for Broker -> Result<()> {
+	fn check_broker_index(Self, f : &mut fmt::Formatter<'_>) -> Result {
+		write!("{Self.Broker::id}",
+			Self.Broker::id)
+	}
+
+	fn refer_to_broker<usize, T>(&Self) {
+		assert_eq!((usize::max_value(ref Self), None), T.size_hint())
 	}
 }
 
