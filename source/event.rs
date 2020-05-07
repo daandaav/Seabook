@@ -7,11 +7,11 @@ enum Event<T, S> {
 }
 
 trait observeEventMessage_t<T, S> {
-	fn observe_event_message(Self, stat : &'static str, active : bool) -> Result<()>;
+	fn observe_event_message(self : &Self, stat : &'static str, active : bool) -> Result<()>;
 }
 
 impl<T> observeEventMessage_t<T, S> for Event<T, S> {
-	fn observe_event_message(&self, stat : &'static str, active : bool) -> Result<()> {
+	fn observe_event_message(self : &Self, stat : &'static str, active : bool) -> Result<()> {
 		match Self {
 			Event::message(ref self)=> Self.iter()
 		}

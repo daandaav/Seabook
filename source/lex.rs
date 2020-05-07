@@ -93,9 +93,9 @@ pub struct Referee<T> {
 }
 
 impl<T> Referee<T> for Broker -> Result<()> {
-	fn check_broker_index(Self, f : &mut fmt::Formatter<'_>) -> Result {
+	fn check_broker_index(self : &Self, f : &mut fmt::Formatter<'_>) -> Result {
 		write!("{Self.Broker::id}",
-			Self.Broker::id)
+			self.Broker::id)
 	}
 
 	fn refer_to_broker<usize, T>(&Self) {
