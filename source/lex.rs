@@ -71,7 +71,7 @@ impl<T> Producer for State {
 
 #[derive(PartialEq)]
 pub struct Broker {
-	id : u32,
+	id : i32,
 
 	Message {
 		len : usize,
@@ -89,19 +89,62 @@ impl<T> Broker for Producer {
 }
 
 pub struct Referee<T> {
-	data : Vec<T>,
+	agents : Vec<T>,
 }
 
 impl<T> Referee<T> for Broker -> Result<()> {
-	fn check_broker_index(self : &Self, f : &mut fmt::Formatter<'_>) -> Result {
+	pub fn check_broker_index(self : &Self, f : &mut fmt::Formatter<'_>) -> Result {
 		write!("{Self.Broker::id}",
 			self.Broker::id)
 	}
 
-	fn refer_to_broker<usize, T>(&Self) {
+	pub fn refer_to_broker<usize, T>(&Self) {
 		assert_eq!((usize::max_value(ref Self), None), T.size_hint())
+	}
+}
+
+pub struct Kollective<T> {
+	referal : Cow<Referee>,
+	iter_dex : iter::<Iterator<'a>>,
+}
+
+pub trait iterIntoAgentsList_t<'a> {
+	fn agent_iter_into(&self) -> Option<Self::Agent>;//TODO(Iterator):...create hi-func iterator -> here
+}
+
+pub impl<T:'a> iterIntoAgentsList<'a> for Result<usize, ()> where T: Kollective {
+	//...
+	type Agent = (&'a Kollective);
+
+	fn agent_iter_into(&self) -> Option<Self::Agent> {
+		self.iter.next()//\
+			.map(|hm| &hm.referal)
 	}
 }
 
 pub struct Consumer {}
 //...
+pub struct Client {
+	bloc : Cow<usize>,
+}
+
+impl<'a> Client {
+
+	pub fn seek_available_brokers(&self) {
+		self.Lexicon.track(agents)
+			.state(|hm| &hm.referal)
+	}//TODO(Iterator):...need to create a higher-fumction iterator
+
+	pub fn iter_brokers_cow(&self) {
+		//...
+		for i in Broker.iter() {
+			//...push and map to Lexicon
+			let mut v = Vec::new();
+
+			let Broker::id<&self, T : i32> = v.push(T as usize);
+			//let 'a = Client::bloc.iter()
+			//TODO: if-else statement for object lifetime
+			if T > i { panic!(), Err(()) }
+		}
+	}//fn iter_broke_cow(self, a)
+}
