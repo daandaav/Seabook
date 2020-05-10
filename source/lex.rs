@@ -17,17 +17,17 @@ enum Lexicon<T, S> {
 	Our Lexicon should derive from either a hashmap function or a vector function.
 */
 
-trait withinLexiconTrackState<T, S> -> Result<()> {//Result with the caret <> could either be: just as a caret <>:;
+trait withinLexiconTrackState_t<T, S> -> Result<()> {//Result with the caret <> could either be: just as a caret <>:;
 	//with template <T>:;
 	//or with function parameter <()>	//a careted function parameter is idead for I/O with the Result
-	fn track_value(Self) -> Result<()>;
-	fn record_state(Self) -> Vec<S>;
+	fn track_value(Self) -> Arc<Result<()>>;
+	fn record_state(Self) -> Cow<S>;
 }
 //impl<T : Read> or impl<T : BufReader> [?]
-impl<T> withinLexiconTrackState for Result<()> where T : Lexicon<T> {
-	fn track_value(Self) -> Result<()> {
+impl<T> withinLexiconTrackState_t for Result<()> where T : Lexicon<T> {
+	fn track_value(Self) -> Arc<Result<()>> {
 		match Self {
-			Lexicon::track(ref Self) => Self.iter(Result<(T)>),
+			Lexicon::track(ref Self) => Self.iter(T),
 		}
 
 		if Self == '_ {
@@ -37,9 +37,11 @@ impl<T> withinLexiconTrackState for Result<()> where T : Lexicon<T> {
 		}//if Self == _
 	}//fn track_value(Self)
 
-	fn record_state(Self) -> Vec<S> {
+	fn record_state(Self) -> Cow<S> {
 		match Self {
-			Lexicon::state(ref Self) => Vec<Self>
+			Lexicon::state(ref Self) => Self.iter(S)
+				.map(S)
+				.next(S)
 		}
 
 		if Self == -1 {
@@ -55,7 +57,7 @@ pub struct State {
 
 	broker : Vec<usize>,
 
-	msg : Hash<String, Referee>
+	msg : HashMap<String, Referee>
 }
 
 pub struct Producer {
