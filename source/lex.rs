@@ -159,7 +159,7 @@ pub struct Consumer {}
 //...
 #[derive(Debug, Copy, PartialEq)]
 pub struct Client {
-	bloc : Shared<usize>,
+	bloc : Vec<usize>,
 }
 
 impl<'a> Client {
