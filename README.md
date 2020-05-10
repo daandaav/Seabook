@@ -1,7 +1,7 @@
 # Seabook
-Experimental (Emulated) Client and Unit-test for Apache Kafka in Rust. Based specifically on 'Kafka-Rust' - https://github.com/spicavigo/kafka-rust
+Experimental (Emulated) Client (Handler) and Unit-test for Apache Kafka in Rust. Based specifically on 'Kafka-Rust' - https://github.com/spicavigo/kafka-rust
 
-The general idea is to develop a client (and unit-test framework) that can work with Kafka and Arrow (including Cassandra).
+The general idea is to develop a client (handler and unit-test framework) that can work with Kafka and Arrow (including Cassandra).
 
 Since Kafka already has a reactive and incredibly fault-tolerant framework, and unit-testing for Event Stream Processing services/applications are already available, the purpose of this repository is to experiment with ideas.
 
