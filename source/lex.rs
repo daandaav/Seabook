@@ -28,11 +28,11 @@ impl<T> withinLexiconTrackState for Result<()> where T : Lexicon<T> {
 	fn track_value(Self) -> Result<()> {
 		match Self {
 			Lexicon::track(ref Self) => Self.iter(Result<(T)>),
-			'_ => unimplemented!("Resulted in a Wildcard[?!]: {}\n", Lexicon::track(Self)),
 		}
 
 		if Self == '_ {
-			panic!("{Lexicon::track(ref Self)} => Self.iter(Result<(T)>)\n ...has resulted into [[panic!()]]")?;
+			'_ => unimplemented!("Resulted in a Wildcard[?!]: {}\n", Lexicon::track(Self)),
+			panic!("{Lexicon::track(Self)} => Self.iter(Result<(T)>)\n ...has resulted into [[panic!()]]", Lexicon::track(Self))?;
 			Err(T)
 		}//if Self == _
 	}//fn track_value(Self)
@@ -49,7 +49,7 @@ impl<T> withinLexiconTrackState for Result<()> where T : Lexicon<T> {
 	}
 }//impl<T> withinLexiconTrackValue
 
-#[derive(Clone, PartialEq)]
+#[derive(Copy, PartialEq)]
 pub struct State {
 	id : u32,
 
@@ -87,12 +87,39 @@ impl<T> Broker for Producer {
 		Self.v.push(p);
 	}
 }
+#[derive(Copy)]
+pub struct Handler<T> {
+	//agents : Vec<T>,//or use Shared<T> for code non-applicatbility
+	referee : Arc<Broker>,//Reference with RefCell<> [[!?]]
+	iter_dex : iter::<Iterator<'a>>,
 
-pub struct Referee<T> {
-	agents : Vec<T>,
+	buffers : [usize; 256] = [0u8..256u8],
 }
 
-impl<T> Referee<T> for Broker -> Result<()> {
+impl<T> Handler<T> for Result<()> where T: Broker {
+	pub fn new(&self) -> Handler {
+		self.referee = referee;
+		self.iter_dex = iter_dex;
+		self.buffers = buffers;
+	}
+
+	pub fn manual_event_reset(&self, active : bool) {
+		if active == false {
+			Handler::new();
+		}
+		else {
+			//...TODO(Web Socket): Asynchronous connection checked and verified
+			//...checks connection and enriched streams of Broker
+			try while active == false {
+				self.iter(Handler::referee[|i| i.buffers
+					.next()
+					.map(|hm| &hm.iter_dex)])
+			}
+
+			active = true;
+		}
+	}
+
 	pub fn check_broker_index(self : &Self, f : &mut fmt::Formatter<'_>) -> Result {
 		write!("{Self.Broker::id}",
 			self.Broker::id)
@@ -101,42 +128,45 @@ impl<T> Referee<T> for Broker -> Result<()> {
 	pub fn refer_to_broker<usize, T>(&Self) {
 		assert_eq!((usize::max_value(ref Self), None), T.size_hint())
 	}
-}
 
-pub struct Kollective<T> {
-	referal : Cow<Referee>,
-	iter_dex : iter::<Iterator<'a>>,
-}
+	fn agent_iter_into(&self) -> Option<Self::referee> {
+		let ref &self = iter.as_slice()
+			.next()
+			.map(|hm| &hm.iter_dex)//or map to .agents [[!?]]
+	}
 
-pub trait iterIntoAgentsList_t<'a> {
-	fn agent_iter_into(&self) -> Option<Self::Agent>;//TODO(Iterator):...create hi-func iterator -> here
-}
+		//TODO(Iterator):...create hi-func iterator -> here
+	fn handle_agent_iterator(&self, Handler::iter_dex) {
+		//...TODO(Handler): self unit-test - and then implement array throughput
+		return;
+	}
 
-pub impl<T:'a> iterIntoAgentsList<'a> for Result<usize, ()> where T: Kollective {
-	//...
-	type Agent = (&'a Kollective);
+	type Agent = (&'a Handler);
 
-	fn agent_iter_into(&self) -> Option<Self::Agent> {
+	fn agent_iter_into(&self) -> Option<Self::referee> {
 		self.iter.next()//\
-			.map(|hm| &hm.referal)
+			.map(|hm| &hm.iter_dex)
 	}
 }
+//TODO(Handler): Have Handler 'handle' the hi-func iterator and then\
+//		have an accompanying/complimentary collection-tier management
 
 pub struct Consumer {}
 //...
+#[derive(Debug, Copy, PartialEq)]
 pub struct Client {
-	bloc : Cow<usize>,
+	bloc : Shared<usize>,
 }
 
 impl<'a> Client {
 
 	pub fn seek_available_brokers(&self) {
-		self.Lexicon.track(agents)
-			.state(|hm| &hm.referal)
+		self.Lexicon.track(referee)
+			.state(|hm| &hm.iter_dex)
 	}//TODO(Iterator):...need to create a higher-fumction iterator
 
-	pub fn iter_brokers_cow(&self) {
-		//...
+	pub fn iter_brokers_cow(&self) {//Cow<Broker> is not Arc<Broker>-
+		//-should be now used in tandem with RefCell<T>.
 		for i in Broker.iter() {
 			//...push and map to Lexicon
 			let mut v = Vec::new();
@@ -146,5 +176,5 @@ impl<'a> Client {
 			//TODO: if-else statement for object lifetime
 			if T > i { panic!(), Err(()) }
 		}
-	}//fn iter_broke_cow(self, a)
+	}//fn iter_broke_cow(&self)
 }
