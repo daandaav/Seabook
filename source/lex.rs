@@ -51,11 +51,6 @@ impl<T : Read, S : Copy> withinLexiconTrackState_t for Lexicon<T, S> {
 			Lexicon::state(ref Self) => Self.iter(T)
 				.map(S)//.next(T).cycle/\.chain(S)
 		}
-
-		if Self == -1 {
-			panic!("{Lexicon::state(Self)} => Vec<Self>", Lexicon::state(Self))?,
-			Err(T, S)
-		}//if Self == -1
 	}
 }//impl<T> withinLexiconTrackValue
 
