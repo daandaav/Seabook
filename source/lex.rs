@@ -4,6 +4,8 @@ use std::prelude::v1::*;
 enum Lexicon<T, S> {
 	track(T),
 	state(S),
+
+	//node<T, S>,
 }
 
 /*
@@ -15,38 +17,44 @@ enum Lexicon<T, S> {
 		which are the lossless and reliable-of-fault subsystem, should the main system's connection be severed or fail.
 
 	Our Lexicon should derive from either a hashmap function or a vector function.
+
+	TODO(lifetime):
+		I think I should implement a global lifetime variable of: <'a> to pass through all structures-
+		-as a hi-func iterator template argument to track what data from the Broker subsystem-
+		-is doing ... [[!?]]
+		?! And then possibly have it go through an impl<T : 'a> for Arc<'a> \
+			then reference it in a RefCell<'a>
 */
 
-trait withinLexiconTrackState_t<T, S> -> Result<()> {//Result with the caret <> could either be: just as a caret <>:;
+trait withinLexiconTrackState_t {//Result with the caret <> could either be: just as a caret <>:;
 	//with template <T>:;
 	//or with function parameter <()>	//a careted function parameter is idead for I/O with the Result
 	fn track_value(Self) -> Arc<Result<()>>;
 	fn record_state(Self) -> Cow<S>;
 }
 //impl<T : Read> or impl<T : BufReader> [?]
-impl<T> withinLexiconTrackState_t for Result<()> where T : Lexicon<T> {
-	fn track_value(Self) -> Arc<Result<()>> {
-		match Self {
-			Lexicon::track(ref Self) => Self.iter(T),
+impl<T : Read, S : Copy> withinLexiconTrackState_t for Lexicon<T, S> {
+	type Agent = (T : Read, &'S : Copy);
+	type Alloc = Lexicon<T, &'S>;
+
+	fn track_iter_value(Self) -> Self::Alloc where T, &'S : Self::Agent {
+		match Self<T, S> => Lexicon {
+			Lexicon::track(T),
+			Lexicon::state(S),
 		}
+	}
 
-		if Self == '_ {
-			'_ => unimplemented!("Resulted in a Wildcard[?!]: {}\n", Lexicon::track(Self)),
-			panic!("{Lexicon::track(Self)} => Self.iter(Result<(T)>)\n ...has resulted into [[panic!()]]", Lexicon::track(Self))?;
-			Err(T)
-		}//if Self == _
-	}//fn track_value(Self)
+	type Con = Lexicon<T, S>;
 
-	fn record_state(Self) -> Cow<S> {
+	fn track_record_state(Self) -> Self::Agent + Self::Con {
 		match Self {
-			Lexicon::state(ref Self) => Self.iter(S)
-				.map(S)
-				.next(S)
+			Lexicon::state(ref Self) => Self.iter(T)
+				.map(S)//.next(T).cycle/\.chain(S)
 		}
 
 		if Self == -1 {
 			panic!("{Lexicon::state(Self)} => Vec<Self>", Lexicon::state(Self))?,
-			Err(S)
+			Err(T, S)
 		}//if Self == -1
 	}
 }//impl<T> withinLexiconTrackValue
@@ -99,6 +107,7 @@ pub struct Handler<T> {
 }
 
 impl<T> Handler<T> for Result<()> where T: Broker {
+
 	pub fn new(&self) -> Handler {
 		self.referee = referee;
 		self.iter_dex = iter_dex;
@@ -142,8 +151,6 @@ impl<T> Handler<T> for Result<()> where T: Broker {
 		//...TODO(Handler): self unit-test - and then implement array throughput
 		return;
 	}
-
-	type Agent = (&'a Handler);
 
 	fn agent_iter_into(&self) -> Option<Self::referee> {
 		self.iter.next()//\
