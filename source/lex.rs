@@ -182,3 +182,7 @@ impl<'a> Client {
 		}
 	}//fn iter_broke_cow(&self)
 }
+
+/*
+	If Vec<> goes above a certain ceiling/boundary, implement Drop and Drop's drop()
+*/

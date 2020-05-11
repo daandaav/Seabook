@@ -1,62 +1,66 @@
-use std::prelude::v1::*;
-
-#[derive(Debug, Copy)]
-enum Event<T, S> {
-	message(T, &'static str, bool),
-	state(S)
+enum Poll<T> {
+	Ready(T),
+	Pending,
 }
 
-trait observeEventMessage_t<T, S> {
-	fn observe_event_message(self : &Self, stat : &'static str, active : bool) -> Result<()>;
+struct ReadIntoFuture<&'a> {
+	input_read : &'a Socket,
 }
 
-impl<T> observeEventMessage_t<T, S> for Event<T, S> {
-	fn observe_event_message(self : &Self, stat : &'static str, active : bool) -> Result<()> {
-		match Self {
-			Event::message(ref self)=> Self.iter()
-		}
-	}//fn define_event_message
+trait PollInForFuture_t {
+	type Output;
+
+	fn poll_out(
+		self : Pin<&Self>.
+
+		cx : &Context<'_>,
+	) -> Poll<Self::Output>;
 }
 
-trait callOfEvent_t<T> {
-	fn callout_event(Self, active : bool) -> Result;
-	fn callback_event(Self, active : bool) -> Result<()>;
+trait ReadoutInFuture_t {
+	type Output;
+
+	fn read_out_poll(&self, wake_n_make: fn()) -> Poll<Self::Output>;
 }
 
-impl<T> callOfEvent_t for Event {
-	fn callout_event(Self, active : bool) -> Result<()> {
-		Event::callout_event(Self, active = true)
-	}
+impl<'a> ReadoutInFuture_t {
+	type Input = Poll<&'a>;
 
-	fn callback_event(Self, active : bool) -> Result<()> {
-		Event::callback_event(Self, active = false)
-	}
-}
+	fn request_for_input(&self) -> Poll<Self::Input>;
 
-#[derive(Default, Copy)]
-enum Data<T> {
-	data(T),
-}
-
-enum Push<T> {
-	push(T),
-}
-
-impl<T : Read> Push for Data -> Result<usize> {
-	fn data_push_into_iter(Self) -> Result<usize> {
-		match Self {
-			Data::data(ref Self) => Self.read()
-	}
-}
-
-enum Pull<T> {
-	pull(T),
-}
-
-impl<T : Drop> Pull for Data -> Result<usize> {
-	fn data_pull_from_iter(Self) -> Result<usize> {
-		match Self {
-			Data::data(ref Self) => Self.drop()
+	fn read_out_poll(&self, wake_n_make: fn()) -> Poll<Self::Output> {
+		if self.input_read.has_data_to_read() {
+			Poll::Ready(self.input_read.read_buf())
+		} else {
+			self.input_read.set_readable_callback(wake_n_make);
+			Poll::Pending
 		}
 	}
 }
+
+struct OpForItemChoice<It> {
+	item_choice : Option<It>,
+}
+
+impl<It> ReadOutIntoFuture for OpForItemChoice<It> where It : ReadIntoFuture<Output = ()> {
+	type Output = ();
+	
+	fn poll_out(&self, wake_n_make: fn()) -> Poll<Self::Output> {
+		if let Some(a) = self.a {
+			if let Poll::Ready(()) = a.poll_out(wake_n_make) {
+				self.a.take();
+			}
+		}
+
+		if self.a.is_none() {
+			Poll::Ready(())
+		} else {
+			Poll::Pending
+		}
+	}
+}
+
+/*
+	Asynchronous Programming in Rust:
+	https://rust-lang.github.io/async-book/02_execution/02_future.html
+*/
