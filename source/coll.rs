@@ -22,19 +22,21 @@ struct Message {
 trait InterMsgQ_t {
 	type Msg;
 
-	fn read_interface_msg(self : Collection<&self>, m : &Message::read_only<Self::Msg>);
+	fn read_interface_msg(&self : Vec<Collection>, m : Message::read_only<Self::Msg>);
 
-	fn man_buffer_size(&self, b : &Message::buffer);
+	fn man_buffer_size(&self, b : Message::buffer);
 }
 
 impl<'a> InterMsgQ_t {
 	type Msg = Collection<&'a>;
 
 		fn read_interfacing_msg(
-			self : Collection<&self>,
-			m : &Message::read_only,
+			&self : Vec<Collection>,
+			m : Message::read_only,
 		) {
-			if (let i = 0u32) < self.iter() {
+			let self : Vec<Collection> = Vec.with_capacity(0..254);
+			
+			if (let i = 0u32) < self.len() {
 			//TODO:...
 				self.iter(m)
 				.map(|h| h.read_only)
