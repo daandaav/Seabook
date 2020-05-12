@@ -4,7 +4,7 @@ enum Collection<T> {
 	Data(T),
 	Await,
 
-	Cursor {
+	Pointer {
 		//...iterate through a collection
 		dataset_alloc : Vec<usize>,
 		iter_thru(T),
@@ -14,7 +14,7 @@ enum Collection<T> {
 struct Message {
 	data_collection : Vec<Collection>,
 
-	buffer : i32,
+	buffer : Vec<u32>,
 
 	read_only : Arc<Collection>,
 }
@@ -50,8 +50,12 @@ impl<'a> InterMsgQ_t {
 		) {
 			let i = 0u32;
 			if i < d.iter() {
+				let b = Vec::new();
 				self.iter(d)
 					.map(|h| h.buffer)
-					.cycle() } else if i > d.iter() { return?; }
+					.cycle() } else if i > d.iter() {
+						b.clear();
+						break;
+					} //TODO: b.clear()
 		}//fn man_buffer_size
 }
