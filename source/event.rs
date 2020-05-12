@@ -11,7 +11,7 @@ trait PollInForFuture_t {
 	type Output;
 
 	fn poll_out(
-		self : Pin<&Self>.
+		self : Poll<&Self>,
 
 		cx : &Context<'_>,
 	) -> Poll<Self::Output>;
