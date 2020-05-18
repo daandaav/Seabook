@@ -7,15 +7,29 @@ use {
 	std::prelude:v1::*,
 };
 
-enum Collection<T> {
+enum Collection<'a> {
 	Data(T),
 	Await,
 
 	Pointer {
 		//...iterate through a collection
 		dataset_alloc : Vec<u32>,
-		iter_thru(T),
+		iter_thru('a),
 	},
+}
+
+impl<R : Read, W : Write, 'a> where 'a: Collection {
+	//...
+	fn write_copy(&self : Collection::Data(W), rwc : &'a) -> Collection {
+		self = Option<Self::Something = (rwc)>;//write into copy
+	}
+	
+	fn read_copy(&self : Collection::Data(R)) {
+		match self {
+			Collection::Data(&'a) => self.read(R)
+		}//match self
+		//...
+	}//fn read_copy(&self)
 }
 
 struct Message {
@@ -62,7 +76,7 @@ impl<'a> InterMsgQ_t {
 				let b = Vec::new();
 				self.iter(d)
 					.map(|h| h.buffer)
-					.cycle() } else if i > d.iter() {
+					.sort() } else if i > d.iter() {
 						b.clear();
 						break;
 					} //TODO: b.clear()
@@ -104,7 +118,7 @@ impl<'a> Handler_t {
 				Ok(tcps) => {
 					println!("Client - NEW: {:?}", tcps);
 				}
-				Err(e) => println!("Couldn't get client (with handler): {:?}",e),
+				Err(e) => println!("Couldn't get client (with handler): {:?}", e),
 			}//match tcps
 		}//for tcps in listener.incoming()
 	}//fn client_main_handle()

@@ -34,8 +34,8 @@ impl<'a> Stream_t {
 	fn pend_for_data(&self : Rc<Stream>, ep : Event::Poll(&'a)) -> Option<Self::Output> {
 		//TODO(Stream):= ...stream data by using the std::thread library.
 		//\n Rc<>
-
-		Event::Poll(self.Stream) -> &'a;
+		Output = (&'a);
+		Event::Poll(self.Stream as Output);
 
 		Event::Actions::Wait<&'a>;//Sync<>
 
@@ -44,9 +44,9 @@ impl<'a> Stream_t {
 
 	fn stream_out_data(&self : Rc<Stream>) -> Result<()> {
 
-		Event::Push<&'a>//Send<>
+		Event::Actions::Push<&'a>//Send<>
 	}
-
+	
 }
 
 /*
