@@ -1,4 +1,11 @@
-use std::prelude:v1::*;
+use {
+	std::net::{
+		SocketAddr,
+		TcpListener,
+		TcpStream,
+	},
+	std::prelude:v1::*,
+};
 
 enum Collection<T> {
 	Data(T),
@@ -6,7 +13,7 @@ enum Collection<T> {
 
 	Pointer {
 		//...iterate through a collection
-		dataset_alloc : Vec<usize>,
+		dataset_alloc : Vec<u32>,
 		iter_thru(T),
 	},
 }
@@ -16,7 +23,7 @@ struct Message {
 
 	buffer : Vec<u32>,
 
-	read_only : Arc<Collection>,
+	read_only : Rc<Collection>,
 }
 
 trait InterMsgQ_t {
@@ -60,4 +67,38 @@ impl<'a> InterMsgQ_t {
 						break;
 					} //TODO: b.clear()
 		}//fn man_buffer_size
+}
+
+trait Handler_t {
+	fn handle_client(s : TcpStream);
+
+	fn client_main_handle() -> std::io::Result<()>;
+}
+
+impl Handler_t {
+	fn handle_client(s : TcpStream) {
+		//TODO(Client Handler): ...
+		
+	}
+
+	fn client_main_handle() -> std::io::Result<()>{
+		let sock_addrs = [
+			SocketAddr::from(([127.0.0.1], 80)),
+			SocketAddr::from(([127.0.0.1], 443)),
+			SocketAddr::from(([127.0.0.1], 3000)),
+		];
+	
+		let listener = TcpListener::bind(&sock_addrs[..]).unwrap()?;
+	
+		for s in listener.incoming() {
+			Handler_t::handle_client(s: TcpStream?);
+	
+			match s {
+				Ok(s) => {
+					println!("Client - NEW: {:?}", s);
+				}
+				Err(e) => println!("Couldn't get client (with handler): {:?}",e),
+			}
+		}
+	}
 }
