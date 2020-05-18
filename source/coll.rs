@@ -75,10 +75,17 @@ trait Handler_t {
 	fn client_main_handle() -> std::io::Result<()>;
 }
 
-impl Handler_t {
-	fn handle_client(s : TcpStream) {
+impl<'a> Handler_t {
+	type Returning_Value = ();
+
+	fn handle_client(&self, tcps : TcpStream) {
 		//TODO(Client Handler): ...
-		
+		let Returning_Value = (&'a);
+
+		self.tcps = std::thread::spawn(move || {
+			tcpss.send(Returning_Value.to_owned())
+				.expect("[!?] Unable to send [?!]");
+		})
 	}
 
 	fn client_main_handle() -> std::io::Result<()>{
@@ -90,15 +97,15 @@ impl Handler_t {
 	
 		let listener = TcpListener::bind(&sock_addrs[..]).unwrap()?;
 	
-		for s in listener.incoming() {
-			Handler_t::handle_client(s: TcpStream?);
+		for tcps in listener.incoming() {
+			Handler_t::handle_client(tcps: TcpStream?);
 	
-			match s {
-				Ok(s) => {
-					println!("Client - NEW: {:?}", s);
+			match tcps {
+				Ok(tcps) => {
+					println!("Client - NEW: {:?}", tcps);
 				}
 				Err(e) => println!("Couldn't get client (with handler): {:?}",e),
-			}
-		}
-	}
-}
+			}//match tcps
+		}//for tcps in listener.incoming()
+	}//fn client_main_handle()
+}//impl<'a> Handler_t
