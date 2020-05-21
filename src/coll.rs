@@ -4,6 +4,8 @@ use {
 		TcpListener,
 		TcpStream,
 	},
+	std::rc::Rc,
+	std::cell::RefCell,
 	std::prelude::v1::*,
 };
 
@@ -19,108 +21,92 @@ enum Collection<T> {
 }
 
 trait CollectionT {
-	fn write_copy(&self, rwc : Vec<usize, Collection>) -> Result<()>;
+	fn write_copy(&self, rwc : Vec<usize>);
 
-	fn read_copy(&self, rwc : Vec<usize, Collection>);
+	fn read_copy(&self, rwc : Vec<usize>);
 }
 
 impl<'a> dyn CollectionT {
 	//...
-	fn write_copy(&self, rwc : Vec<usize, Collection>) -> Result<()> {
-		self.rwc
-			.write(rwc)
-			.clone();//write into copy
+	fn write_copy(&self, b : usize,rwc : Vec<usize>) {
+		match self {
+			r => rwc = Vec::new(),
+		}
+			let r = rwc;
+
+			r.iter()
+				.clone()
+				.map(|hm| b)
+				.next();
+
+			if b > r.len() {
+				panic!("Buffer is greater than Read-Write-Copy size!")
+			}
 	}
 	
-	fn read_copy(&self, rwc : Vec<usize, Collection>) {
+	fn read_copy(&self, b : usize, rwc : Vec<usize>) {
 		match self {
-			Collection::Data(rwc) => self.read()
+			r => rwc = Vec::new(),
 		}//match self
+
+		let r = rwc;
+
+		//println!("{}", r.iter());//implement fmt::Display...
 		//...
 	}//fn read_copy(&self)
 }
 
 struct Message {
-	data_collection : RefCell<Collection>,
+	data_collection : usize,
 
-	buffer : Vec<u32>,
+	buffer : Vec<usize>,
 
-	read_only : Rc<Collection>,
+	read_only : Rc<usize>,
 }
 
 trait InterMsgQT {
-	type Msg = RefCell<Message>;
+	fn read_interface_msg(&self, c : Vec<usize>, m : usize);
 
-	fn read_interface_msg(&self, c : Vec<Collection>, m : Message::read_only<Self::Msg>);
-
-	fn man_buffer_size(&self, d : <coll::Message as Trait>::data_collection, b : <coll::Message as Trait>::buffer);
+	fn man_buffer_size(&self, d : Vec<usize>, b : usize);
 }
 
 impl<'a> dyn InterMsgQT {
-	type Msg = RefCell<Message>;
-
 		fn read_interfacing_msg(
 			&self,
-			c : Vec<usize, Collection>,
-			m : <coll::Message as Trait>::read_only`,
+			c : Vec<usize>,
+			m : usize,
 		) {
-			let c = Vec::with_capacity(0..254);
+			let capacity;
 			
-			if let i = 0u32 < self.len() {
-			//TODO:...
-				self.iter(m)
-				.map(|h| h.read_only)
-				.next()
-			} else { return 1?; }
+			c = Vec::with_capacity(capacity: usize);
 			//...
 		}//fn read_interfacing_msg
 
 		fn man_buffer_size(
 			&self,
-			d : <coll::Message as Trait>::data_collection,
-			b : <coll::Message as Trait>::buffer,
+			d : Vec<usize>,
+			b : usize,
 		) {
-			let i = 0u32;
-			if i < d.iter() {
-				let b = Vec::new();
-				self.iter(d)
-					.map(|h| h.buffer)
-					.sort() } else if i > d.iter() {
-						b.clear();
-						return 0;
-					} //TODO: b.clear()
+			//TODO(BUffer): Map d_vec<usize> iterations to b_for_buffer:usize
 		}//fn man_buffer_size
 }
 
 trait HandlerT {
-	fn handle_client(s : TcpStream);
-
-	fn client_main_handle() -> std::io::Result<()>;
+	fn client_main_handle(&self);
 }
 
-impl<'a> dyn HandlerT {
+impl dyn HandlerT {
 
-	fn handle_client(&self, tcps : TcpStream) {
-		//TODO(Client Handler): ...
-		self.tcps = std::thread::spawn(move || {
-			tcps.send()
-				.to_owned()
-				.expect("[!?] Unable to send [?!]");
-		})
-	}
-
-	fn client_main_handle() -> std::io::Result<()>{
+	fn client_main_handle(&self) {
 		let sock_addrs = [
 			SocketAddr::from(([127,0,0,1], 80)),
 			SocketAddr::from(([127,0,0,1], 443)),
 			SocketAddr::from(([127,0,0,1], 3000)),
 		];
 	
-		let listener = TcpListener::bind(&sock_addrs[..]).unwrap()?;
+		let listener = TcpListener::bind(&sock_addrs[..]).unwrap();
 	
 		for tcps in listener.incoming() {
-			HandlerT::handle_client(tcps: TcpStream)?;
-	
 			match tcps {
 				Ok(tcps) => {
 					println!("Client - NEW: {:?}", tcps);

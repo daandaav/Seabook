@@ -2,11 +2,11 @@ pub enum Moc<T> {
 	moc(T)
 }
 
-trait testForMoc_t {
+trait MocTestT {
 	fn test(&self) -> Result<()>;
 }
 
-pub impl<T> testForMoc_t for Result<()> where T: Moc {
+pub impl<T> MocTestT for Result<()> where T: Moc {
 	#[test]
 	fn test(&self) -> Result<()> {
 		if self

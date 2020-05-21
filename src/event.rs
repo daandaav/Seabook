@@ -1,5 +1,16 @@
+use {
+	std::net::{
+		SocketAddr,
+		TcpListener,
+		TcpStream,
+	},
+	std::rc::Rc,
+	std::cell::RefCell,
+	std::prelude::v1::*,
+};
+
 struct Stream {
-	data_stream : RefCell<Data>,
+	data_stream : Rc<Data>,
 }
 
 struct Data {
@@ -8,40 +19,20 @@ struct Data {
 
 enum Event<T> {
 	Poll(T),
-	Pend,
-	
-	Actions {
-		Wait : dyn Sync,
-		Push : dyn Send,
-	},
+	//...
 }
 
 trait StreamT {
-	fn pend_for_data(&self, rcs : Rc<Stream>, ep : fn());//amx := Arc<Mutex>
-
-	fn stream_out_data(&self, rcs : Rc<Stream>);
+	fn poll_event_stream(&self, rcs : Rc<Stream>, ep : fn());//amx := Arc<Mutex>
 }
 
-impl<'a, T> dyn StreamT {
-	type Process = Event<&'a T>;
-	type Output = ();
-
-	fn request_input(&self) -> Option<<(dyn event::StreamT + 'static) as Trait>::Process> {
-		return self
-	}
-
-	fn pend_for_data(&self, rcs : Rc<Stream>, ep : fn()) -> Option<<(dyn event::StreamT + 'static) as Trait>::Output> {
+impl<'a> dyn StreamT {
+	fn poll_event_stream(&self, rcs : Rc<Stream>) {
 		//TODO(Stream):= ...stream data by using the std::thread library.
 		//\n Rc<>
-		Event::Poll(self.Stream);
-
-		Event::Wait;
-
-		Event::Pend
-	}
-
-	fn stream_out_data(&self, rcs : Rc<Stream>) -> Result<(usize, Vec<Stream>)> {
-		Event::Push;
+		match self {
+			Event::Poll(rcs)
+		};
 	}
 	
 }
